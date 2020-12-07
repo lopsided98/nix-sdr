@@ -35,10 +35,7 @@ in {
   };
 
   config = mkIf cfg.enable {
-    # Disable standard RTL2838 driver
-    boot.blacklistedKernelModules = [ "dvb_usb_rtl28xxu" ];
-
-    services.udev.packages = [ pkgs.rtl-sdr ];
+    hardware.rtl-sdr.enable = true;
 
     systemd.services.rtl-tcp = {
       wantedBy = [ "multi-user.target" ];
