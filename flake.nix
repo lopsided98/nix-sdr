@@ -22,6 +22,7 @@
           sdrtrunk;
       };
     }) // {
-      overlay = import ./overlay.nix;
+      overlay = import ./pkgs;
+      nixosModule = import ./modules;
     };
 }
