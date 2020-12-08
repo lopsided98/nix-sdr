@@ -2,12 +2,12 @@
 
 buildGoPackage rec {
   pname = "rtlamr-collect";
-  version = "20200825-unstable";
-  goPackagePath = "github.com/bemasher/rtlamr-collect";
+  version = "20201207-unstable";
+  goPackagePath = "github.com/lopsided98/rtlamr-collect";
   src = fetchFromGitHub {
     owner = "bemasher";
     repo = pname;
-    rev = "5fd3e7602a359c05bed78fcb3eecb0642cfdce6e";
-    sha256 = "0y75mvvdnkcld0bfqjl02i6qa5kw1y8mil069a7n6bzmghyk69fn";
+    rev = "951451e459321f954aa237fa1b9e3c6c6b448239";
+    sha256 = "119fpv2431dqp5px0hp56rxprhvmwi8prz5amk80ll8sk2p0y72s";
   };
 }
