@@ -79,8 +79,6 @@ in {
         ''; }
     ];
 
-    hardware.rtl-sdr.enable = true;
-
     systemd.services.rtlamr-collect = {
       wantedBy = [ "multi-user.target" ];
       serviceConfig = {
