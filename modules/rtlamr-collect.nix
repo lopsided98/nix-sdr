@@ -99,7 +99,7 @@ in {
         COLLECT_INFLUXDB_CLIENT_KEY = clientKey;
       };
       script = ''
-        '${lib.escapeShellArg pkgs.rtlamr}/bin/rtlamr' \
+        ${lib.escapeShellArg pkgs.rtlamr}/bin/rtlamr \
           ${lib.optionalString (cfg.filterId != "") "-filterid=${lib.escapeShellArg cfg.filterId}"} \
           -server=${lib.escapeShellArg  cfg.server} \
           -format=json \
