@@ -54,7 +54,6 @@ in {
 
     users = {
       users.rtl-tcp = {
-        description = "rtl_tcp user";
         isSystemUser = true;
         group = "rtl-tcp";
         # Allow access to RTL-SDR

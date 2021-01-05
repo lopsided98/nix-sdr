@@ -111,7 +111,6 @@ in {
 
     users = {
       users.rtlamr-collect = {
-        description = "rtlamr-collect user";
         isSystemUser = true;
         group = "rtlamr-collect";
       };
