@@ -35,23 +35,36 @@ in {
         description = "InfluxDB hostname";
       };
 
-      database = mkOption {
-        type = types.str;
-        default = "rtlamr";
-        description = "InfluxDB database";
-      };
-
-      user = mkOption {
-        type = types.str;
-        default = "rtlamr";
-        description = "InfluxDB user";
-      };
-
-      password = mkOption {
+      token = mkOption {
         type = types.str;
         description = ''
-          InfluxDB password. Will be stored in plain text in the Nix store.
+          InfluxDB token with write access to bucket. When connecting to a v1.8
+          instance, the token is of the form: username:password. Will be stored
+          in plain text in the Nix store.
         '';
+      };
+
+      organization = mkOption {
+        type = types.str;
+        default = "";
+        description = ''
+          InfluxDB organization. When connecting to a v1.8 instance, provide an
+          arbitrary value.
+        '';
+      };
+
+      bucket = mkOption {
+        type = types.str;
+        description = ''
+          InfluxDB bucket used to store data. When connecting to a v1.8
+          instance, the bucket is of the form: database/retention_policy.
+        '';
+      };
+
+      measurement = mkOption {
+        type = types.str;
+        default = "rtlamr";
+        description = "InfluxDB measurement to use";
       };
 
       clientCert = mkOption {
@@ -85,20 +98,28 @@ in {
         Type = "exec";
         User = "rtlamr-collect";
         Group = "rtlamr-collect";
+        Restart = "always";
+        RestartSec = 10;
+        StateDirectory = "rtlamr-collect";
+        WorkingDirectory = "/var/lib/rtlamr-collect";
+      };
+      unitConfig = {
+        StartLimitBurst = 5;
+        StartLimitIntervalSec = 300;
       };
       environment = with cfg.influxdb; {
-        COLLECT_INFLUXDB_USER = user;
-        COLLECT_INFLUXDB_PASS = password;
         COLLECT_INFLUXDB_HOSTNAME = hostName;
-        COLLECT_INFLUXDB_DATABASE = database;
-        COLLECT_INFLUXDB_CLIENT_CERT = clientCert;
-        COLLECT_INFLUXDB_CLIENT_KEY = clientKey;
+        COLLECT_INFLUXDB_TOKEN = token;
+        COLLECT_INFLUXDB_ORG = organization;
+        COLLECT_INFLUXDB_BUCKET = bucket;
+        COLLECT_INFLUXDB_MEASUREMENT = measurement;
       } // optionalAttrs (clientCert != null) {
         # Assertion guarantees that both are provided
         COLLECT_INFLUXDB_CLIENT_CERT = clientCert;
         COLLECT_INFLUXDB_CLIENT_KEY = clientKey;
       };
       script = ''
+        set -o pipefail
         ${lib.escapeShellArg pkgs.rtlamr}/bin/rtlamr \
           ${lib.optionalString (cfg.filterId != "") "-filterid=${lib.escapeShellArg cfg.filterId}"} \
           -server=${lib.escapeShellArg  cfg.server} \
