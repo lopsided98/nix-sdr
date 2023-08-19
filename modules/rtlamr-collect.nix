@@ -120,12 +120,15 @@ in {
       };
       script = ''
         set -o pipefail
-        ${lib.escapeShellArg pkgs.rtlamr}/bin/rtlamr \
-          ${lib.optionalString (cfg.filterId != "") "-filterid=${lib.escapeShellArg cfg.filterId}"} \
-          -server=${lib.escapeShellArg  cfg.server} \
-          -format=json \
-          -unique=true \
-          ${lib.escapeShellArgs cfg.extraRtlamrArgs} | \
+        ${lib.escapeShellArgs ([
+         "${pkgs.rtlamr}/bin/rtlamr"
+        ] ++ lib.optionals (cfg.filterId != "") [
+          "-filterid" cfg.filterId
+        ] ++ [
+          "-server" cfg.server
+          "-format=json"
+          "-unique=true"
+        ] ++ cfg.extraRtlamrArgs)} | \
         ${lib.escapeShellArg pkgs.rtlamr-collect}/bin/rtlamr-collect
       '';
     };
