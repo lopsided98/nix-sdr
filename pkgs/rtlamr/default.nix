@@ -16,7 +16,7 @@ buildGoModule rec {
   meta = with lib; {
     description = "An rtl-sdr receiver for Itron ERT compatible smart meters operating in the 900MHz ISM band.";
     homepage = "https://github.com/bemasher/rtlamr";
-    license = licenses.agpl3Only;
+    license = licenses.agpl3Plus;
     maintainers = with maintainers; [ lopsided98 ];
   };
 }

@@ -1,14 +1,22 @@
-{ buildGoPackage, fetchFromGitHub }:
+{ lib, buildGoModule, fetchFromGitHub }:
 
-buildGoPackage rec {
+buildGoModule rec {
   pname = "rtlamr-collect";
   version = "1.0.3";
-  goPackagePath = "github.com/bemasher/rtlamr-collect";
+
   src = fetchFromGitHub {
     owner = "bemasher";
     repo = pname;
     rev = "v${version}";
-    sha256 = "16p0bgrdlc49jz424mfjqh1bj5f51ap3nmz1v2kfl4qmwg8y1rzd";
+    hash = "sha256-7efg0eMVE+qm2OFXO64KxRW5AsTSVSLIl4kw2vJb4Jo=";
   };
-  goDeps = ./deps.nix;
+
+  vendorHash = "sha256-aUuKZaE31PSxJSvvJ+Ag0LXNewYLAC3nuuDV9sLUpJU=";
+
+  meta = with lib; {
+    description = "Data aggregation for rtlamr";
+    homepage = "https://github.com/bemasher/rtlamr-collect";
+    license = licenses.agpl3Plus;
+    maintainers = with maintainers; [ lopsided98 ];
+  };
 }
