@@ -94,6 +94,7 @@ in {
 
     systemd.services.rtlamr-collect = {
       wantedBy = [ "multi-user.target" ];
+      after = [ "network-online.target" ];
       serviceConfig = {
         Type = "exec";
         User = "rtlamr-collect";
